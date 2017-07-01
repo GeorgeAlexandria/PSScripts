@@ -3,7 +3,6 @@ param
     [Parameter(Mandatory = $true)]
     [string]$databaseName,
 
-    [Parameter(Mandatory = $false)]
     [string]$sqlServerName = "(localdb)\."
 )
 
