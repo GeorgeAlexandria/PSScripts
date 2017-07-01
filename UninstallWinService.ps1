@@ -1,13 +1,13 @@
 ﻿param
 (
-    [string]$ServerName,
+    [string]$serverName,
 
     [Parameter(Mandatory = $true)]
-    [string]$ServiceName
+    [string]$serviceName
 )
 
 Write-Output "Checking for existing service..."
-if($ServerName -eq "")
+if($serverName -eq "")
 {
     $service = Get-WmiObject -Namespace "root\cimv2" -Class "Win32_Service" `
         -Filter "Name='$serviceName'" -Impersonation 3
