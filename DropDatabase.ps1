@@ -4,12 +4,12 @@ param
     [string]$databaseName,
 
     [Parameter(Mandatory = $false)]
-    [string]$serverName = "(localdb)\."
+    [string]$sqlServerName = "(localdb)\."
 )
 
 [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo")
 
-$smoServer = new-object Microsoft.SqlServer.Management.Smo.Server($serverName)
+$smoServer = new-object Microsoft.SqlServer.Management.Smo.Server($sqlServerName)
 if($smoServer.Databases.Contains($databaseName))
 {
     $smoServer.KillAllProcess($databaseName)
