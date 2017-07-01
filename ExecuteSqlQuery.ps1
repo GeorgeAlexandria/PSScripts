@@ -1,12 +1,16 @@
-﻿param
+﻿[CmdLetBinding(DefaultParameterSetName="File")]
+param
 (
     [Parameter(Mandatory = $true)]
     [string]$databaseName,
 
     [string]$sqlServerName = "(localdb)\.",
 
-    [Parameter(Mandatory = $true)]
-    [string]$sqlQuery
+    [Parameter(Mandatory = $true, ParameterSetName="Query")]
+    [string]$sqlQuery,
+
+    [Parameter(Mandatory = $true, ParameterSetName="File")]
+    [string]$sqlFilePath
 )
 
 [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo")
@@ -18,8 +22,10 @@ try
         Write-Error "Database $databaseName does not exist on $sqlServerName"
         exit 1
     }
+    $query = (((Get-Content $sqlFilePath) -join [Environment]::NewLine), $sqlQuery)[!$PSCmdlet.ParameterSetName -eq "File"]
+
     $db = $smoServer.Databases[$databaseName]
-    $db.ExecuteNonQuery($sqlQuery)
+    $db.ExecuteNonQuery($query)
 }
 catch
 {
